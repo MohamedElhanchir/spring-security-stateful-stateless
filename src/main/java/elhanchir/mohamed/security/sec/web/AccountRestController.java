@@ -5,6 +5,7 @@ import elhanchir.mohamed.security.sec.entities.AppUser;
 import elhanchir.mohamed.security.sec.services.AccountService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,17 +23,21 @@ public class AccountRestController {
         return accountService.listUsers();
     }
 
+
     @PostMapping("/users")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
     public AppUser saveUser(@RequestBody AppUser appUser) {
         return accountService.addNewUser(appUser);
     }
 
     @PostMapping("/roles")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
     public AppRole saveRole(@RequestBody AppRole appRole) {
         return accountService.addNewRole(appRole);
     }
 
     @PostMapping("/addRoleToUser")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
     public void addRoleToUser(@RequestBody RoleToUserForm form) {
         accountService.addRoleToUser(form.getUsername(), form.getRoleName());
     }
